@@ -1,0 +1,13 @@
+{
+  "module_name": "obstacles-depth",
+  "namespace": "viam",
+  "language": "go",
+  "resource_type": "service",
+  "resource_subtype": "vision",
+  "model_name": "obstacles-depth",
+  "enable_cloud_build": true,
+  "initialize_git": false,
+  "generator_version": "0.1.0",
+  "generated_on": "2025-06-16T17:41:25.985103Z",
+  "module_readme_link": "README.md"
+}
