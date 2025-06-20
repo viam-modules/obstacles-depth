@@ -1,5 +1,4 @@
-
-GO_BUILD_ENV :=
+GO_BUILD_ENV := GOOS=linux GOARCH=arm64
 GO_BUILD_FLAGS :=
 MODULE_BINARY := bin/obstacles-depth
 
@@ -9,7 +8,7 @@ ifeq ($(VIAM_TARGET_OS), windows)
 	MODULE_BINARY = bin/obstacles-depth.exe
 endif
 
-$(MODULE_BINARY): Makefile go.mod *.go cmd/module/*.go 
+$(MODULE_BINARY): Makefile */*.go
 	$(GO_BUILD_ENV) go build $(GO_BUILD_FLAGS) -o $(MODULE_BINARY) cmd/module/main.go
 
 lint:
@@ -22,13 +21,13 @@ update:
 test:
 	go test ./...
 
-module.tar.gz: meta.json $(MODULE_BINARY)
+module.tar.gz: meta.json $(MODULE_BINARY) run.sh
 ifeq ($(VIAM_TARGET_OS), windows)
 	jq '.entrypoint = "./bin/obstacles-depth.exe"' meta.json > temp.json && mv temp.json meta.json
 else
 	strip $(MODULE_BINARY)
 endif
-	tar czf $@ meta.json $(MODULE_BINARY)
+	tar czf $@ meta.json $(MODULE_BINARY) run.sh
 ifeq ($(VIAM_TARGET_OS), windows)
 	git checkout meta.json
 endif

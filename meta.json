@@ -7,19 +7,19 @@
   "models": [
     {
       "api": "rdk:service:vision",
-      "model": "viam:obstacles-depth:obstacles-depth",
+      "model": "viam:vision:obstacles-depth",
       "short_description": "Provide a short (100 characters or less) description of this model here",
       "markdown_link": "README.md#model-viamobstacles-depthobstacles-depth"
     }
   ],
   "applications": null,
   "markdown_link": "README.md",
-  "entrypoint": "bin/obstacles-depth",
+  "entrypoint": "run.sh",
   "first_run": "",
   "build": {
     "build": "make module.tar.gz",
     "setup": "make setup",
-    "path": "bin/module.tar.gz",
+    "path": "module.tar.gz",
     "arch": [
       "linux/amd64",
       "linux/arm64",
