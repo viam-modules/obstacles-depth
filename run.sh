@@ -1,2 +1,2 @@
 #!/bin/bash
-./bin/obstacles-depth $@ &>> /home/adwaitplanter/Documents/obstacles-depth/error.txt
+./bin/obstacles-depth $@ >> /Users/adwait.ganguly/Documents/code/obstacles-depth/error.txt 2>&1
