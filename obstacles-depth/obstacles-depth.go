@@ -100,7 +100,7 @@ func registerObstaclesDepth(
 		MinPtsInPlane:        conf.MinPtsInPlane,
 		MinPtsInSegment:      conf.MinPtsInSegment,
 		MaxDistFromPlane:     conf.MaxDistFromPlane,
-		NormalVec:            r3.Vector{0, -1, 0},
+		NormalVec:            r3.Vector{X: 0, Y: -1, Z: 0},
 		AngleTolerance:       conf.AngleTolerance,
 		ClusteringRadius:     conf.ClusteringRadius,
 		ClusteringStrictness: conf.ClusteringStrictness,
@@ -154,7 +154,6 @@ func (o *obsDepth) obsDepthNoIntrinsics(ctx context.Context, src camera.Camera) 
 	if err != nil {
 		return nil, errors.Errorf("could not get image from %s", src)
 	}
-
 	dm, err := rimage.ConvertImageToDepthMap(ctx, img)
 	if err != nil {
 		return nil, errors.New("could not convert image to depth map")
@@ -197,26 +196,6 @@ func (s *obsDepth) Name() resource.Name {
     return s.name
 }
 
-func (s *obsDepth) Reconfigure(ctx context.Context, deps resource.Dependencies, conf resource.Config) error {
-    return nil
-}
-
-func (s *obsDepth) NewClientFromConn(ctx context.Context, conn rpc.ClientConn, remoteName string, name resource.Name, logger logging.Logger) (vision.Service, error) {
-	return nil, errUnimplemented
-}
-func (s *obsDepth) DetectionsFromCamera(ctx context.Context, cameraName string, extra map[string]interface{}) ([]objdet.Detection, error) {
-	return nil, errUnimplemented
-}
-func (s *obsDepth) Detections(ctx context.Context, img image.Image, extra map[string]interface{}) ([]objdet.Detection, error) {
-	return nil, errUnimplemented
-}
-func (s *obsDepth) ClassificationsFromCamera(ctx context.Context, cameraName string, n int, extra map[string]interface{}) (classification.Classifications, error) {
-	return nil, errUnimplemented
-}
-func (s *obsDepth) Classifications(ctx context.Context, img image.Image, n int, extra map[string]interface{}) (classification.Classifications, error) {
-	return nil, errUnimplemented
-}
-
 func (s *obsDepth) GetObjectPointClouds(ctx context.Context, cameraName string, extra map[string]interface{}) ([]*vis.Object, error) {
 	var cam camera.Camera
 	var err error
@@ -232,7 +211,6 @@ func (s *obsDepth) GetObjectPointClouds(ctx context.Context, cameraName string, 
 		return nil, errors.New("no camera specified")
 	}
 	
-	// Use your existing segmenter logic
 	segmenter := s.buildObsDepth(s.logger)
 	return segmenter(ctx, cam)
 }
@@ -262,7 +240,6 @@ func (s *obsDepth) CaptureAllFromCamera(ctx context.Context, cameraName string, 
 
 	result := viscapture.VisCapture{}
 
-	// Get image if requested
 	if captureOptions.ReturnImage {
 		img, err := camera.DecodeImageFromCamera(ctx, "", nil, cam)
 		if err != nil {
@@ -271,7 +248,6 @@ func (s *obsDepth) CaptureAllFromCamera(ctx context.Context, cameraName string, 
 		result.Image = img
 	}
 
-	// Get object point clouds if requested
 	if captureOptions.ReturnObject {
 		objects, err := s.GetObjectPointClouds(ctx, cameraName, extra)
 		if err != nil {
@@ -280,19 +256,36 @@ func (s *obsDepth) CaptureAllFromCamera(ctx context.Context, cameraName string, 
 		result.Objects = objects
 	}
 
-	// Set empty arrays for unsupported features
 	result.Detections = []objdet.Detection{}
 	result.Classifications = classification.Classifications{}
 
 	return result, nil
 }
 
-func (s *obsDepth) DoCommand(ctx context.Context, cmd map[string]interface{}) (map[string]interface{}, error) {
+func (s *obsDepth) Close(context.Context) error {
+	return nil
+}
+
+func (s *obsDepth) Reconfigure(ctx context.Context, deps resource.Dependencies, conf resource.Config) error {
+    return nil
+}
+
+func (s *obsDepth) NewClientFromConn(ctx context.Context, conn rpc.ClientConn, remoteName string, name resource.Name, logger logging.Logger) (vision.Service, error) {
+	return nil, errUnimplemented
+}
+func (s *obsDepth) DetectionsFromCamera(ctx context.Context, cameraName string, extra map[string]interface{}) ([]objdet.Detection, error) {
+	return nil, errUnimplemented
+}
+func (s *obsDepth) Detections(ctx context.Context, img image.Image, extra map[string]interface{}) ([]objdet.Detection, error) {
+	return nil, errUnimplemented
+}
+func (s *obsDepth) ClassificationsFromCamera(ctx context.Context, cameraName string, n int, extra map[string]interface{}) (classification.Classifications, error) {
+	return nil, errUnimplemented
+}
+func (s *obsDepth) Classifications(ctx context.Context, img image.Image, n int, extra map[string]interface{}) (classification.Classifications, error) {
 	return nil, errUnimplemented
 }
 
-func (s *obsDepth) Close(context.Context) error {
-	// Put close code here
-	// s.cancelFunc()
-	return nil
+func (s *obsDepth) DoCommand(ctx context.Context, cmd map[string]interface{}) (map[string]interface{}, error) {
+	return nil, errUnimplemented
 }
