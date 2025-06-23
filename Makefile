@@ -21,13 +21,13 @@ update:
 test:
 	go test ./...
 
-module.tar.gz: meta.json $(MODULE_BINARY) run.sh
+module.tar.gz: meta.json $(MODULE_BINARY)
 ifeq ($(VIAM_TARGET_OS), windows)
 	jq '.entrypoint = "./bin/obstacles-depth.exe"' meta.json > temp.json && mv temp.json meta.json
 else
 	strip $(MODULE_BINARY)
 endif
-	tar czf $@ meta.json $(MODULE_BINARY) run.sh
+	tar czf $@ meta.json $(MODULE_BINARY)
 ifeq ($(VIAM_TARGET_OS), windows)
 	git checkout meta.json
 endif
