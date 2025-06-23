@@ -6,8 +6,8 @@ package obstaclesdepth
 
 import (
 	"context"
-	"sort"
 	"image"
+	"sort"
 
 	"github.com/golang/geo/r3"
 	"github.com/pkg/errors"
@@ -22,9 +22,9 @@ import (
 	vision "go.viam.com/rdk/services/vision"
 	"go.viam.com/rdk/spatialmath"
 	vis "go.viam.com/rdk/vision"
-	"go.viam.com/rdk/vision/segmentation"
 	"go.viam.com/rdk/vision/classification"
 	objdet "go.viam.com/rdk/vision/objectdetection"
+	"go.viam.com/rdk/vision/segmentation"
 	"go.viam.com/rdk/vision/viscapture"
 	"go.viam.com/utils/rpc"
 )
@@ -187,7 +187,7 @@ func (o *obsDepth) obsDepthWithIntrinsics(ctx context.Context, src camera.Camera
 	}
 	dm, err := rimage.ConvertImageToDepthMap(ctx, img)
 	if err != nil {
-		return nil, errors.New("could not convert image to depth map")
+		return nil, err
 	}
 	cloud := depthadapter.ToPointCloud(dm, o.intrinsics)
 	return segmentation.ApplyERCCLToPointCloud(ctx, cloud, o.clusteringConf)
