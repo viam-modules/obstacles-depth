@@ -1,4 +1,4 @@
-GO_BUILD_ENV := GOOS=linux GOARCH=arm64
+GO_BUILD_ENV :=
 GO_BUILD_FLAGS :=
 MODULE_BINARY := bin/obstacles-depth
 
