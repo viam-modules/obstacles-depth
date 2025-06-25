@@ -63,6 +63,7 @@ type ObsDepthConfig struct {
 
 // obsDepth is the underlying struct actually used by the service.
 type obsDepth struct {
+	resource.AlwaysRebuild
 	clusteringConf *segmentation.ErCCLConfig
 	intrinsics     *transform.PinholeCameraIntrinsics
 	deps           resource.Dependencies
@@ -74,11 +75,11 @@ type obsDepth struct {
 func (cfg *ObsDepthConfig) Validate(path string) ([]string, []string, error) {
 	var reqDeps []string
 	var optDeps []string
-	
+
 	if cfg.DefaultCamera != "" {
 		reqDeps = append(reqDeps, cfg.DefaultCamera)
 	}
-	
+
 	return reqDeps, optDeps, nil
 }
 
@@ -94,7 +95,7 @@ func registerObstaclesDepth(
 	if conf == nil {
 		return nil, errors.New("config for obstacles_depth cannot be nil")
 	}
-	
+
 	// build the clustering config
 	cfg := &segmentation.ErCCLConfig{
 		MinPtsInPlane:        conf.MinPtsInPlane,
@@ -193,13 +194,13 @@ func (o *obsDepth) obsDepthWithIntrinsics(ctx context.Context, src camera.Camera
 }
 
 func (s *obsDepth) Name() resource.Name {
-    return s.name
+	return s.name
 }
 
 func (s *obsDepth) GetObjectPointClouds(ctx context.Context, cameraName string, extra map[string]interface{}) ([]*vis.Object, error) {
 	var cam camera.Camera
 	var err error
-	
+
 	if cameraName != "" {
 		cam, err = camera.FromDependencies(s.deps, cameraName)
 		if err != nil {
@@ -210,23 +211,23 @@ func (s *obsDepth) GetObjectPointClouds(ctx context.Context, cameraName string, 
 	} else {
 		return nil, errors.New("no camera specified")
 	}
-	
+
 	segmenter := s.buildObsDepth(s.logger)
 	return segmenter(ctx, cam)
 }
 
 func (s *obsDepth) GetProperties(ctx context.Context, extra map[string]interface{}) (*vision.Properties, error) {
 	return &vision.Properties{
-        ClassificationSupported: false,
-        DetectionSupported:      false,
-        ObjectPCDsSupported:     true,
-    }, nil
+		ClassificationSupported: false,
+		DetectionSupported:      false,
+		ObjectPCDsSupported:     true,
+	}, nil
 }
 
 func (s *obsDepth) CaptureAllFromCamera(ctx context.Context, cameraName string, captureOptions viscapture.CaptureOptions, extra map[string]interface{}) (viscapture.VisCapture, error) {
 	var cam camera.Camera
 	var err error
-	
+
 	if cameraName != "" {
 		cam, err = camera.FromDependencies(s.deps, cameraName)
 		if err != nil {
@@ -266,9 +267,9 @@ func (s *obsDepth) Close(context.Context) error {
 	return nil
 }
 
-func (s *obsDepth) Reconfigure(ctx context.Context, deps resource.Dependencies, conf resource.Config) error {
-    return nil
-}
+// func (s *obsDepth) Reconfigure(ctx context.Context, deps resource.Dependencies, conf resource.Config) error {
+// 	return nil
+// }
 
 func (s *obsDepth) NewClientFromConn(ctx context.Context, conn rpc.ClientConn, remoteName string, name resource.Name, logger logging.Logger) (vision.Service, error) {
 	return nil, errUnimplemented
