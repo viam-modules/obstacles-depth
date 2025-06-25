@@ -3,13 +3,13 @@
   "module_id": "viam:obstacles-depth",
   "visibility": "public",
   "url": "",
-  "description": "Modular vision service: obstacles-depth",
+  "description": "This module provides a vision service that detects obstacles in a point cloud.",
   "models": [
     {
       "api": "rdk:service:vision",
       "model": "viam:vision:obstacles-depth",
-      "short_description": "Provide a short (100 characters or less) description of this model here",
-      "markdown_link": "README.md#model-viamobstacles-depthobstacles-depth"
+      "short_description": "This model provides a vision service that detects obstacles in a point cloud.",
+      "markdown_link": "README.md"
     }
   ],
   "applications": null,
