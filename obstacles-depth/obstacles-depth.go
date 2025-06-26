@@ -267,10 +267,6 @@ func (s *obsDepth) Close(context.Context) error {
 	return nil
 }
 
-// func (s *obsDepth) Reconfigure(ctx context.Context, deps resource.Dependencies, conf resource.Config) error {
-// 	return nil
-// }
-
 func (s *obsDepth) NewClientFromConn(ctx context.Context, conn rpc.ClientConn, remoteName string, name resource.Name, logger logging.Logger) (vision.Service, error) {
 	return nil, errUnimplemented
 }
